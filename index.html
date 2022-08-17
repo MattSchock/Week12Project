@@ -38,12 +38,23 @@
             </div>
         </div>
         <br>
-        <button id="create_customer" class="btn btn-primary form-control">Create Customer</button>
+        <button id="create_customer" class="btn btn-primary form-control" onClick="createCustomer(); renderTable()">Create Customer</button>
     <br>
     <br>
     <br>
     <br>
-    <div id="customer_table"></div>
+    
+    <table id="customer_table" class="table table-dark table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>DOB</th>
+            <th>Delete</th>
+        </tr>
+        <tbody id="tableappend">
+
+        </tbody>
+    </table>
 
 
 
