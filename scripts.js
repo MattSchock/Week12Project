@@ -13,6 +13,19 @@ function emptyApiArray() {
     }
 }
 
+let parsedList = []
+
+
+// function parseCustomerList() {
+//     for(let i = 0; i <customerList.length; i++) {
+//         let objectToParse = []
+//         objectToParse = JSON.parse(`${customerList[i]}`);
+//         parsedList.push(objectToParse);
+//         console.log(objectToParse);
+//         console.log(`${customerList[i]}`);
+//     }
+//     console.log(parsedList,);
+// }
 
 
 
@@ -20,9 +33,12 @@ function emptyApiArray() {
 const updateCustomerList = async () => {
     let customerList = [];
     const response = await fetch("https://62fd71deb9e38585cd51f570.mockapi.io/customers")
-    const data = await response.json();
-    customerList = data;
-    console.log(customerList);
+    let data = await response.json();
+    data = Object.values(data);
+    console.log('jsonparseworking?', data);
+    customerList = [data];
+    console.log('data', data);
+    console.log('fetchcustomerlist', customerList);
     return customerList;
 }
 
@@ -51,7 +67,7 @@ function createCustomer() {
 
 function renderTable() {
     $customer_Table.empty();
-    updateCustomerList();
+    // updateCustomerList();
     for (let i = 0; i < customerList.length; i++) {
     $customer_Table.append(`
         $('<tr>')
@@ -72,7 +88,7 @@ function renderTable() {
         </tr>')`
     )
     }
-    console.log(customerList);
+    console.log('rendercustomerlist', customerList);
 }
 
 
@@ -104,10 +120,10 @@ function updateCustomer(id) {
 
     })
     renderTable();
-    console.log(customerList);
 }
 
-
+updateCustomerList();
+// setTimeout(renderTable(), 200000);
 
 
 // function showModal(id) {
