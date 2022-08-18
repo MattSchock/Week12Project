@@ -57,11 +57,32 @@
         </tbody>
     </table>
 
+    <div class="modal" tabindex="-1" id="edit-modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="name-edit" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name-edit">
+                <label for="tel-edit" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="tel-edit">
+                <label for="DOB-edit" class="form-label">DOB</label>
+                <input type="date" class="form-control" id="DOB-edit">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onClick="updateCustomer(passedValue)">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
 
-
-
+   
 
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
@@ -69,3 +90,6 @@
     <script src="scripts.js"></script>
 </body>
 </html>
+
+
+

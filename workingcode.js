@@ -23,9 +23,8 @@ function createCustomer() {
 
 function renderTable() {
     $customer_Table.empty();
-    
+
     for (let i = 0; i < customerList.length; i++) {
-        let passedValue = `${customerList[i].id}`;
     $customer_Table.append(`
         $('<tr>')
         $('<td>${customerList[i].customerName}
@@ -38,13 +37,11 @@ function renderTable() {
             <button class="btn btn-danger" text="Delete" onClick="deleteCustomer(${customerList[i].id})">Delete</button>
             </td>
             <td>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-modal" >
-            Edit
-            </button>
+            <button class="btn btn-primary" text="Delete" onClick="updateCustomer(${customerList[i].id})">Update</button>
             </td>
         </tr>')`
+        
     )
-    return passedValue
     }
     console.log(customerList);
 }
@@ -60,14 +57,9 @@ function deleteCustomer(id) {
 
 function updateCustomer(id) {
     const indexToUpdate = customerList.findIndex(customer => customer.id ===id)
-    customerList[indexToUpdate].customerName = $('#name-edit').val();
-    customerList[indexToUpdate].phoneNumber = $('#tel-edit').val();
-    customerList[indexToUpdate].customerDOB = $('#DOB-edit').val();
+    customerList[indexToUpdate].customerName =$('#customer_name').val();
+    customerList[indexToUpdate].phoneNumber = $('#customer_phone').val();
+    customerList[indexToUpdate].customerDOB = $('#customer_birthdate').val();
     renderTable();
-    console.log(customerList);
 }
 
-function passIdValue() {
-    let passedValue = $(customerList[i].id);
-    return passedValue;
-}
