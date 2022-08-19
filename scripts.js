@@ -10,6 +10,9 @@ function emptyApiArray() {
     if (customerList.length == 0) {
         id = 1;
         return id;
+    } else {
+        id=customerList.length;
+        return id;
     }
 }
 
@@ -31,14 +34,15 @@ let parsedList = []
 
 
 const updateCustomerList = async () => {
-    let customerList = [];
+    customerList = [];
     const response = await fetch("https://62fd71deb9e38585cd51f570.mockapi.io/customers")
     let data = await response.json();
     data = Object.values(data);
     console.log('jsonparseworking?', data);
-    customerList = [data];
+    customerList = data;
     console.log('data', data);
     console.log('fetchcustomerlist', customerList);
+    renderTable();
     return customerList;
 }
 
@@ -62,7 +66,7 @@ function createCustomer() {
     };
 
 
-
+console.log('customerlistlength', customerList.length)
 
 
 function renderTable() {
