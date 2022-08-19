@@ -1,55 +1,36 @@
 
-let = $myModal = $('#myModal');
-let customerList = [];
-const $customer_Table = $('#tableappend');
-let id = 1
-const apiUrl = "https://62fd71deb9e38585cd51f570.mockapi.io/customers"
+let customerList = [];                  //array to hold List locally
+const $customer_Table = $('#tableappend');    //jquery to target visual table of customers on html
+let id = 1                                   //local ID to match mockapi id
+const apiUrl = "https://62fd71deb9e38585cd51f570.mockapi.io/customers"        //mockapi url
 
 
-function emptyApiArray() {
+function emptyApiArray() {                //if current array is empty resets ID. should keep api in sync
     if (customerList.length == 0) {
         id = 1;
-        return id;
-    } else {
-        id=customerList.length;
         return id;
     }
 }
 
-let parsedList = []
-
-
-// function parseCustomerList() {
-//     for(let i = 0; i <customerList.length; i++) {
-//         let objectToParse = []
-//         objectToParse = JSON.parse(`${customerList[i]}`);
-//         parsedList.push(objectToParse);
-//         console.log(objectToParse);
-//         console.log(`${customerList[i]}`);
-//     }
-//     console.log(parsedList,);
-// }
 
 
 
-
-const updateCustomerList = async () => {
-    customerList = [];
-    const response = await fetch("https://62fd71deb9e38585cd51f570.mockapi.io/customers")
-    let data = await response.json();
-    data = Object.values(data);
-    console.log('jsonparseworking?', data);
-    customerList = data;
-    console.log('data', data);
-    console.log('fetchcustomerlist', customerList);
-    renderTable();
+const updateCustomerList = async () => {        //update function
+    customerList = [];              //clears customer list
+    const response = await fetch("https://62fd71deb9e38585cd51f570.mockapi.io/customers")   //grabs api
+    let data = await response.json();      //dumps api data in variable
+    data = Object.values(data);         //Honestly no idea, but it doesnt work without it.
+    console.log('jsonparseworking?', data);   //testing log
+    customerList = data;             //dumps data back into list
+    console.log('data', data);      //testing log
+    console.log('fetchcustomerlist', customerList);    //testing log
+    renderTable();                  //calls function to render to DOM
     return customerList;
 }
 
 
 
-class Customer {
-    
+class Customer {             //customer object class
     constructor(customerName, phoneNumber, customerDOB, Id) {
         this.customerName = customerName;
         this.phoneNumber = phoneNumber;
@@ -58,22 +39,21 @@ class Customer {
     }
 }
 
-function createCustomer() {
-    const addedCustomer = new Customer($(`#customer_name`).val(), $(`#customer_phone`).val(), $(`#customer_birthdate`).val(), id);
-    $.post(apiUrl, addedCustomer);
-    customerList.push(addedCustomer);
-    id++
-    };
+function createCustomer() {                //creates a customer with values from html
+    const addedCustomer = new Customer($(`#customer_name`).val(), $(`#customer_phone`).val(), $  (`#customer_birthdate`).val(), id);
+    $.post(apiUrl, addedCustomer);   //pushes to api
+    customerList.push(addedCustomer);   //pushes to local storage
+    id++                                 //iterates ID
+    }; 
 
 
-console.log('customerlistlength', customerList.length)
+console.log('customerlistlength', customerList.length)   //testing log
 
 
-function renderTable() {
-    $customer_Table.empty();
-    // updateCustomerList();
-    for (let i = 0; i < customerList.length; i++) {
-    $customer_Table.append(`
+function renderTable() {             //render table 
+    $customer_Table.empty();         //clears DOM
+    for (let i = 0; i < customerList.length; i++) {    //iterates through customer list and appends to DOM with edit and update buttons
+    $customer_Table.append(`                         
         $('<tr>')
         $('<td>${customerList[i].customerName}
         </td>
@@ -81,8 +61,8 @@ function renderTable() {
         </td>
         <td>${customerList[i].customerDOB}
         </td>')
-            <td>
-            <button class="btn btn-danger" text="Delete" onClick="deleteCustomer(${customerList[i].id})">Delete</button>
+            <td>                                                             
+            <button class="btn btn-danger" text="Delete" onClick="deleteCustomer(${customerList[i].id}">Delete</button>
             </td>
             <td>
             <button type="button" class="btn btn-primary" data-bs-target="#edit-modal" onClick="updateCustomer(${customerList[i].id})" >
@@ -92,30 +72,29 @@ function renderTable() {
         </tr>')`
     )
     }
-    console.log('rendercustomerlist', customerList);
+    console.log('rendercustomerlist', customerList);    //testing log
 }
 
 
-function deleteCustomer(id) {
-    const indexToDelete = customerList.findIndex(customer => customer.id===id)
-    $.ajax({
+function deleteCustomer(id) {           //remove customer function
+    const indexToDelete = customerList.findIndex(customer => customer.id===id)   //finds id
+    $.ajax({                            //tells api to remove 
         url: apiUrl + `/${id}` ,
         type: 'DELETE'
     });
-
-    customerList.splice(indexToDelete, 1);
-    renderTable();
-    emptyApiArray();
+    customerList.splice(indexToDelete, 1);      //removes from local storage
+    renderTable();                             //rerenders DOM
+    emptyApiArray();                           //checks if local storage is empty to keep id in sync with api
 }
 
 
 
-function updateCustomer(id) {
-    const indexToUpdate = customerList.findIndex(customer => customer.id ===id)
-    customerList[indexToUpdate].customerName = $('#customer_name').val();
+function updateCustomer(id) {                   //update customer function
+    const indexToUpdate = customerList.findIndex(customer => customer.id ===id)   //finds id
+    customerList[indexToUpdate].customerName = $('#customer_name').val();          //updates values locally
     customerList[indexToUpdate].phoneNumber = $('#customer_phone').val();
     customerList[indexToUpdate].customerDOB = $('#customer_birthdate').val();
-    $.ajax({
+    $.ajax({                                                             //tells api of new values
         url: apiUrl + `/${id}`,
         type: 'PUT',
         data: {'customerName': $('#customer_name').val(),
@@ -123,68 +102,7 @@ function updateCustomer(id) {
                 'customerDOB': $('#customer_birthdate').val()  }
 
     })
-    renderTable();
+    renderTable();                                          //rerenders DOM
 }
 
-updateCustomerList();
-// setTimeout(renderTable(), 200000);
-
-
-// function showModal(id) {
-//     $myModal.append(`
-//     <div class="modal" tabindex="-1" id="edit-modal">
-//     <div class="modal-dialog">
-//       <div class="modal-content">
-//         <div class="modal-header">
-//           <h5 class="modal-title">Modal title</h5>
-//           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-//         </div>
-//         <div class="modal-body">
-//             <label for="name-edit" class="form-label">Name</label>
-//             <input type="text" class="form-control" id="name-edit">
-//             <label for="tel-edit" class="form-label">Phone</label>
-//             <input type="tel" class="form-control" id="tel-edit">
-//             <label for="DOB-edit" class="form-label">DOB</label>
-//             <input type="date" class="form-control" id="DOB-edit">
-//         </div>
-//         <div class="modal-footer">
-//           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-//           <button type="button" class="btn btn-primary" onClick="updateCustomer()">Save changes</button>
-//         </div>
-//       </div>
-//     </div>
-//   </div>
-//   `)
-
-//     console.log('dynamic id', id)
-//     console.log(`<div class="modal" tabindex="-1" id="edit-modal">
-//     <div class="modal-dialog">
-//       <div class="modal-content">
-//         <div class="modal-header">
-//           <h5 class="modal-title">Modal title</h5>
-//           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-//         </div>
-//         <div class="modal-body">
-//             <label for="name-edit" class="form-label">Name</label>
-//             <input type="text" class="form-control" id="name-edit">
-//             <label for="tel-edit" class="form-label">Phone</label>
-//             <input type="tel" class="form-control" id="tel-edit">
-//             <label for="DOB-edit" class="form-label">DOB</label>
-//             <input type="date" class="form-control" id="DOB-edit">
-//         </div>
-//         <div class="modal-footer">
-//           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-//           <button type="button" class="btn btn-primary" onClick="updateCustomer()">Save changes</button>
-//         </div>
-//       </div>
-//     </div>
-//   </div>`)
-// }
-
-
-
-
-// function passIdValue() {
-//     let passedValue = $(customerList[i].id);
-//     return passedValue;
-// }
+updateCustomerList();       //renders DOM on page load.
