@@ -90,12 +90,12 @@ function deleteCustomer(id) {    //finds entry by ID and clears from mock api
 
 
 
-function updateCustomer(id) {   //updates entries locally and API with new data
-    const indexToUpdate = customerList.findIndex(customer => customer.id ===id)  //updates entry locally
+function updateCustomer(id) {   
+    const indexToUpdate = customerList.findIndex(customer => customer.id ===id)  
     customerList[indexToUpdate].customerName = $('#customer_name').val();
     customerList[indexToUpdate].phoneNumber = $('#customer_phone').val();
     customerList[indexToUpdate].customerDOB = $('#customer_birthdate').val();
-    $.ajax({  //updates entry to api
+    $.ajax({  
         url: apiUrl + `/${id}`,
         type: 'PUT',
         data: {'customerName': $('#customer_name').val(),
@@ -103,8 +103,8 @@ function updateCustomer(id) {   //updates entries locally and API with new data
                 'customerDOB': $('#customer_birthdate').val()  }
 
     })
-    renderTable();     //rerenders DOM
-    console.log(customerList);   //testing log
+    renderTable();     
+    console.log(customerList);   
 }
 
 updateCustomerList();
